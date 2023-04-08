@@ -20,7 +20,7 @@ const burnerConfig = scaffoldConfig.burnerWallet;
 
 // We always want to have mainnet enabled (ENS resolution, ETH price, etc). But only once.
 const enabledChains =
-  (configuredNetwork.id as number) === 11155111 ? [configuredNetwork] : [configuredNetwork, chains.sepolia];
+  (configuredNetwork.id as number) === 1 ? [configuredNetwork] : [configuredNetwork, chains.sepolia];
 
 /**
  * Chains for the app
@@ -30,7 +30,6 @@ export const appChains = configureChains(
   [
     alchemyProvider({
       apiKey: scaffoldConfig.alchemyApiKey,
-      priority: 0,
     }),
   ],
   {
