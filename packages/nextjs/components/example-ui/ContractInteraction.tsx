@@ -1,86 +1,152 @@
 import { useState } from "react";
-import { CopyIcon } from "./assets/CopyIcon";
-import { DiamondIcon } from "./assets/DiamondIcon";
-import { HareIcon } from "./assets/HareIcon";
-import { ArrowSmallRightIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 export const ContractInteraction = () => {
-  const [visible, setVisible] = useState(true);
-  const [newGreeting, setNewGreeting] = useState("");
+  const [nftStandard, setNftStandard] = useState([]);
+  const [nftAddress, setNftAddress] = useState([]);
+  const [tokenID, setTokenID] = useState([]);
+  const [lendAmount, setLendAmount] = useState([]);
+  const [maxBorrowDuration, setMaxBorrowDuration] = useState([]);
+  const [dailyBorrowPrice, setDailyBorrowPrice] = useState([]);
+  const [paymentToken, setPaymentToken] = useState([]);
+  const [willAutoRenew, setWillAutoRenew] = useState([]);
 
   const { writeAsync, isLoading } = useScaffoldContractWrite({
-    contractName: "YourContract",
-    functionName: "setGreeting",
-    args: [newGreeting],
-    value: "0.01",
+    contractName: "PxLend",
+    functionName: "lend",
+    args: [
+      nftStandard,
+      nftAddress,
+      tokenID,
+      lendAmount,
+      maxBorrowDuration,
+      dailyBorrowPrice,
+      paymentToken,
+      willAutoRenew,
+    ],
   });
 
+  const handleNftStandardChange = (e, index) => {
+    const newNftStandard = [...nftStandard];
+    newNftStandard[index] = e.target.checked ? 1 : 0;
+    setNftStandard(newNftStandard);
+  };
+  
+  const handleNftAddressChange = (e, index) => {
+    const newNftAddress = [...nftAddress];
+    newNftAddress[index] = e.target.value;
+    setNftAddress(newNftAddress);
+  };
+
+  const handleTokenIDChange = (e, index) => {
+    const newTokenID = [...tokenID];
+    newTokenID[index] = Number(e.target.value);
+    setTokenID(newTokenID);
+  };
+  
+  const handleLendAmountChange = (e, index) => {
+    const newLendAmount = [...lendAmount];
+    newLendAmount[index] = Number(e.target.value);
+    setLendAmount(newLendAmount);
+  };
+  
+  const handleMaxBorrowDurationChange = (e, index) => {
+    const newMaxBorrowDuration = [...maxBorrowDuration];
+    newMaxBorrowDuration[index] = Number(e.target.value);
+    setMaxBorrowDuration(newMaxBorrowDuration);
+  };
+  
+  const handleDailyBorrowPriceChange = (e, index) => {
+    const newDailyBorrowPrice = [...dailyBorrowPrice];
+    newDailyBorrowPrice[index] = e.target.value;
+    setDailyBorrowPrice(newDailyBorrowPrice);
+  };
+  
+  const handlePaymentTokenChange = (e, index) => {
+    const newPaymentToken = [...paymentToken];
+    newPaymentToken[index] = Number(e.target.value);
+    setPaymentToken(newPaymentToken);
+  };
+
+  const handleWillAutoRenewChange = (e, index) => {
+    const newWillAutoRenew = [...willAutoRenew];
+    newWillAutoRenew[index] = e.target.checked;
+    setWillAutoRenew(newWillAutoRenew);
+  };
+
   return (
-    <div className="flex bg-base-300 relative pb-10">
-      <DiamondIcon className="absolute top-24" />
-      <CopyIcon className="absolute bottom-0 left-36" />
-      <HareIcon className="absolute right-0 bottom-24" />
-      <div className="flex flex-col w-full mx-5 sm:mx-8 2xl:mx-20">
-        <div className={`mt-10 flex gap-2 ${visible ? "" : "invisible"} max-w-2xl`}>
-          <div className="flex gap-5 bg-base-200 bg-opacity-80 z-0 p-7 rounded-2xl shadow-lg">
-            <span className="text-3xl">👋🏻</span>
-            <div>
-              <div>
-                In this page you can see how some of our <strong>hooks & components</strong> work, and how you can bring
-                them to life with your own design! Have fun and try it out!
-              </div>
-              <div className="mt-2">
-                Check out{" "}
-                <code className="italic bg-base-300 text-base font-bold [word-spacing:-0.5rem]">
-                  packages / nextjs/pages / example-ui.tsx
-                </code>{" "}
-                and its underlying components.
-              </div>
-            </div>
+    <div className="flex flex-col w-full mx-5 sm:mx-8 2xl:mx-20">
+      <div className="flex flex-col mt-6 px-7 py-8 bg-base-200 opacity-80 rounded-2xl shadow-lg border-2 border-primary">
+        <span className="text-4xl sm:text-6xl text-black">Lend NFTs</span>
+        <div className="mt-4 flex flex-col gap-4">
+          {/* Add appropriate input fields for each parameter */}
+          <div className="flex items-center">
+            <span className="mr-4">NFT Standard:</span>
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={nftStandard[0] === 1}
+                onChange={(e) => handleNftStandardChange(e, 0)}
+              />
+              <span className="slider round"></span>
+            </label>
+            <span className="ml-4">{nftStandard[0] === 0 ? "E721" : "E1155"}</span>
           </div>
-          <button
-            className="btn btn-circle btn-ghost h-6 w-6 bg-base-200 bg-opacity-80 z-0 min-h-0 drop-shadow-md"
-            onClick={() => setVisible(false)}
-          >
-            <XMarkIcon className="h-4 w-4" />
-          </button>
-        </div>
-
-        <div className="flex flex-col mt-6 px-7 py-8 bg-base-200 opacity-80 rounded-2xl shadow-lg border-2 border-primary">
-          <span className="text-4xl sm:text-6xl text-black">Set a Greeting_</span>
-
-          <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-5">
+          <input
+            type="text"
+            placeholder="NFT Address"
+            onChange={(e) => handleNftAddressChange(e, 0)}
+          />
+          <input
+            type="number"
+            placeholder="Token ID"
+            onChange={(e) => handleTokenIDChange(e, 0)}
+          />
+          <input
+            type="number"
+            placeholder="Lend Amount"
+            onChange={(e) => handleLendAmountChange(e, 0)}
+          />
+          <input
+            type="number"
+            placeholder="Max Borrow Duration"
+            onChange={(e) => handleMaxBorrowDurationChange(e, 0)}
+          />
+          <input
+            type="text"
+            placeholder="Daily Borrow Price"
+            onChange={(e) => handleDailyBorrowPriceChange(e, 0)}
+          />
+          <input
+            type="number"
+            placeholder="Payment Token"
+            onChange={(e) => handlePaymentTokenChange(e, 0)}
+          />
+          <label>
+            Auto Renew:
             <input
-              type="text"
-              placeholder="Write your greeting here"
-              className="input font-bai-jamjuree w-full px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
-              onChange={e => setNewGreeting(e.target.value)}
+              type="checkbox"
+              onChange={(e) => handleWillAutoRenewChange(e, 0)}
             />
-            <div className="flex rounded-full border border-primary p-1 flex-shrink-0">
-              <div className="flex rounded-full border-2 border-primary p-1">
-                <button
-                  className={`btn btn-primary rounded-full capitalize font-normal font-white w-24 flex items-center gap-1 hover:gap-2 transition-all tracking-widest ${
-                    isLoading ? "loading" : ""
-                  }`}
-                  onClick={writeAsync}
-                >
-                  {!isLoading && (
-                    <>
-                      Send <ArrowSmallRightIcon className="w-3 h-3 mt-0.5" />
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-4 flex gap-2 items-start">
-            <span className="text-sm leading-tight">Price:</span>
-            <div className="badge badge-warning">0.01 ETH + Gas</div>
-          </div>
+          </label>
+        </div>
+  
+        <div className="mt-4 flex flex-col items-center gap-4">
+          <button
+            className={`btn btn-primary ${
+              isLoading ? "loading" : ""
+            }`}
+            onClick={writeAsync}
+          >
+            {!isLoading && (
+              <>
+                Send <ArrowSmallRightIcon className="w-3 h-3 mt-0.5" />
+              </>
+            )}
+          </button>
         </div>
       </div>
     </div>
-  );
+  );  
 };
