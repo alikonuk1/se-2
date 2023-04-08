@@ -32,7 +32,6 @@ export const appChains = configureChains(
       apiKey: scaffoldConfig.alchemyApiKey,
       priority: 0,
     }),
-    publicProvider({ priority: 1 }),
   ],
   {
     stallTimeout: 3_000,
