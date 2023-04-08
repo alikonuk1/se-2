@@ -1,5 +1,5 @@
 import { Chain, Wallet } from "@rainbow-me/rainbowkit";
-import { hardhat } from "wagmi/chains";
+import { sepolia } from "wagmi/chains";
 import scaffoldConfig from "~~/scaffold.config";
 import {
   BurnerConnector,
@@ -31,7 +31,7 @@ export const burnerWalletConfig = ({ chains }: BurnerWalletOptions): Wallet => (
     }
 
     if (burnerConfig.onlyLocal) {
-      return targetNetwork.id !== hardhat.id;
+      return targetNetwork.id !== sepolia.id;
     }
 
     return false;

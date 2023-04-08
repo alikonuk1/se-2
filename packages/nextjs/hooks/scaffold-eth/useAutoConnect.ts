@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useEffectOnce, useLocalStorage } from "usehooks-ts";
 import { Connector, useAccount, useConnect } from "wagmi";
-import { hardhat } from "wagmi/chains";
+import { sepolia } from "wagmi/chains";
 import scaffoldConfig from "~~/scaffold.config";
 import { burnerWalletId, defaultBurnerChainId } from "~~/services/web3/wagmi-burner/BurnerConnector";
 import { getTargetNetwork } from "~~/utils/scaffold-eth";
@@ -22,7 +22,7 @@ const getInitialConnector = (
   const burnerConfig = scaffoldConfig.burnerWallet;
   const targetNetwork = getTargetNetwork();
 
-  const allowBurner = burnerConfig.enabled && (burnerConfig.onlyLocal ? targetNetwork.id === hardhat.id : true);
+  const allowBurner = burnerConfig.enabled && (burnerConfig.onlyLocal ? targetNetwork.id === sepolia.id : true);
 
   if (!previousWalletId) {
     // The user was not connected to a wallet

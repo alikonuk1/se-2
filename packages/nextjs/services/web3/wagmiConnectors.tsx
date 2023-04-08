@@ -20,7 +20,7 @@ const burnerConfig = scaffoldConfig.burnerWallet;
 
 // We always want to have mainnet enabled (ENS resolution, ETH price, etc). But only once.
 const enabledChains =
-  (configuredNetwork.id as number) === 1 ? [configuredNetwork] : [configuredNetwork, chains.mainnet];
+  (configuredNetwork.id as number) === 11155111 ? [configuredNetwork] : [configuredNetwork, chains.sepolia];
 
 /**
  * Chains for the app
@@ -37,7 +37,7 @@ export const appChains = configureChains(
   {
     stallTimeout: 3_000,
     // Sets pollingInterval if using chain's other than local hardhat chain
-    ...(configuredNetwork.id !== chains.hardhat.id
+    ...(configuredNetwork.id !== chains.sepolia.id
       ? {
           pollingInterval: scaffoldConfig.pollingInterval,
         }
